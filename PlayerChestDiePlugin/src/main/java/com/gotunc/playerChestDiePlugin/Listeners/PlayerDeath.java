@@ -41,8 +41,8 @@ public class PlayerDeath implements Listener {
             Block secondBlock = secondChestLocation.getBlock();
             secondBlock.setType(Material.CHEST); // İkinci sandığı oluştur
             secondChest = (Chest) secondBlock.getState();
+            secondChest.setCustomName(ChatColor.AQUA + "[RAHMETLI] " + ChatColor.RED + ChatColor.STRIKETHROUGH + event.getEntity().getName());
             secondChest.update();
-
         }
         // İkinci sandığın envanteri
         Inventory secondChestInventory = null;
@@ -80,5 +80,4 @@ public class PlayerDeath implements Listener {
         // Eşyaların yere düşmesini engelle
         event.getDrops().clear();
     }
-
 }
