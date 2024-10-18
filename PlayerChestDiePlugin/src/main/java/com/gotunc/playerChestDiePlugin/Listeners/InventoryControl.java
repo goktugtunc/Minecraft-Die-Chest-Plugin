@@ -5,7 +5,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
-import org.bukkit.block.data.type.WallSign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -23,12 +22,8 @@ public class InventoryControl implements Listener {
 
             // Eğer bu blok bir duvar tabelasıysa
             if (adjacentBlock.getType() == Material.OAK_WALL_SIGN) {
-
-                WallSign wallSign = (WallSign) adjacentBlock.getBlockData(); // Tabela verisini al
-
                 // Eğer tabela bu sandığa yapışık ise
                 if (((Sign) adjacentBlock.getState()).getLine(0).contains(ChatColor.AQUA + "[RAHMETLI]")) {
-                    Bukkit.broadcastMessage("Removing sign");
                     Sign sign = (Sign) adjacentBlock.getState(); // Tabelayı al
                     World world = block.getWorld();
                     Location location = block.getLocation();
