@@ -1,9 +1,6 @@
 package com.gotunc.playerChestDiePlugin.Listeners;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
@@ -28,13 +25,16 @@ public class InventoryControl implements Listener {
             if (adjacentBlock.getType() == Material.OAK_WALL_SIGN) {
 
                 WallSign wallSign = (WallSign) adjacentBlock.getBlockData(); // Tabela verisini al
-                BlockFace attachedFace = wallSign.getFacing().getOppositeFace(); // Tabelanın yapışık olduğu bloğun yönünü bul
 
                 // Eğer tabela bu sandığa yapışık ise
                 if (((Sign) adjacentBlock.getState()).getLine(0).contains(ChatColor.AQUA + "[RAHMETLI]")) {
+                    Bukkit.broadcastMessage("Removing sign");
                     Sign sign = (Sign) adjacentBlock.getState(); // Tabelayı al
+                    World world = block.getWorld();
+                    Location location = block.getLocation();
                     sign.getBlock().setType(Material.AIR); // Tabelayı kaldır
-
+                    world.playSound(location, Sound.BLOCK_WOOD_BREAK, 1, 1);
+                    world.playEffect(location, Effect.STEP_SOUND, Material.OAK_WALL_SIGN);
                     break;
                 }
             }
@@ -69,6 +69,8 @@ public class InventoryControl implements Listener {
                 {
                     removeSign(chest.getBlock());
                     chest.getBlock().setType(Material.AIR);
+                    chest.getBlock().getWorld().playSound(chest.getBlock().getLocation(), Sound.BLOCK_WOOD_BREAK, 1, 1);
+                    chest.getBlock().getWorld().playEffect(chest.getBlock().getLocation(), Effect.STEP_SOUND, Material.CHEST);
                 }
                 if (secondBlock != null)
                 {
