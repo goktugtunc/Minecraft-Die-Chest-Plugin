@@ -6,6 +6,8 @@ import com.gotunc.playerChestDiePlugin.Listeners.blockBreak;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.Connection;
+
 public final class PlayerChestDiePlugin extends JavaPlugin {
 
     public static JavaPlugin instance;

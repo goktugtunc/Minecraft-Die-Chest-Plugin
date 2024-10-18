@@ -19,10 +19,29 @@ public class PlayerDeath implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (event.getDrops().size() == 0)
+        if (event.getDrops().isEmpty())
             return;
+        boolean isDoubleChest;
+        if (event.getDrops().size() > 27)
+            isDoubleChest = true;
+        else
+            isDoubleChest = false;
         Location location = event.getEntity().getLocation(); // Oyuncunun öldüğü konumu al
         Block block = location.getBlock();
+        if (isDoubleChest)
+        {
+            while (!block.getType().isAir() || !block.getRelative(1, 0, 0).getType().isAir()) {
+                location.add(0, 1, 0);
+                block = location.getBlock();
+            }
+        }
+        else
+        {
+            while (!block.getType().isAir()) {
+                location.add(0, 1, 0);
+                block = location.getBlock();
+            }
+        }
 
         // Sandık yerleştir
         block.setType(Material.CHEST);
@@ -35,7 +54,7 @@ public class PlayerDeath implements Listener {
 
         // İkinci sandığı oluştur
         Chest secondChest = null;
-        if (event.getDrops().size() > 27)
+        if (isDoubleChest)
         {
             Location secondChestLocation = location.clone().add(1, 0, 0); // Yanına eklemek için
             Block secondBlock = secondChestLocation.getBlock();
