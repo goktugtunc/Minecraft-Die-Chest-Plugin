@@ -1,0 +1,8 @@
+name: PlayerChestDiePlugin
+version: '1.0-SNAPSHOT'
+main: com.gotunc.playerChestDiePlugin.PlayerChestDiePlugin
+api-version: '1.18'
+permissions:
+    playerchestdieplugin.breakBlock:
+        default: false
+        description: Allows the player to use the plugin
