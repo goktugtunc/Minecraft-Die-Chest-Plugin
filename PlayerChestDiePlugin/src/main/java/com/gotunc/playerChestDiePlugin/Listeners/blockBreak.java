@@ -1,5 +1,6 @@
 package com.gotunc.playerChestDiePlugin.Listeners;
 
+import com.gotunc.playerChestDiePlugin.PlayerChestDiePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,12 +14,34 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
+import java.sql.PreparedStatement;
+
 public class blockBreak implements Listener {
+
+    private void deleteChestFromDatabase(Block block)
+    {
+        try{
+            String query = "DELETE FROM DieChests WHERE World = ? AND X = ? AND Y = ? AND Z = ?";
+            PreparedStatement statement = PlayerChestDiePlugin.connection.prepareStatement(query);
+            statement.setString(1, block.getWorld().getName());
+            statement.setInt(2, block.getX());
+            statement.setInt(3, block.getY());
+            statement.setInt(4, block.getZ());
+            statement.executeUpdate();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if (event.getPlayer().isOp() || event.getPlayer().hasPermission("playerchestdieplugin.breakBlock"))
+        {
+            deleteChestFromDatabase(event.getBlock());
             return;
+        }
         if (event.getBlock().getType() == Material.CHEST)
         {
             Block block = event.getBlock();

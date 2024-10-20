@@ -1,5 +1,6 @@
 package com.gotunc.playerChestDiePlugin.Listeners;
 
+import com.gotunc.playerChestDiePlugin.PlayerChestDiePlugin;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -10,6 +11,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CompassMeta;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.sql.PreparedStatement;
 
 public class InventoryControl implements Listener {
 
@@ -66,6 +71,26 @@ public class InventoryControl implements Listener {
                     chest.getBlock().setType(Material.AIR);
                     chest.getBlock().getWorld().playSound(chest.getBlock().getLocation(), Sound.BLOCK_WOOD_BREAK, 1, 1);
                     chest.getBlock().getWorld().playEffect(chest.getBlock().getLocation(), Effect.STEP_SOUND, Material.CHEST);
+                    Location location = chest.getBlock().getLocation();
+                    ItemStack compass = new ItemStack(Material.COMPASS);
+                    CompassMeta meta = (CompassMeta) compass.getItemMeta();
+                    meta.setLodestone(location);
+                    meta.setLodestoneTracked(false);
+                    meta.setDisplayName(ChatColor.AQUA + "X: " + location.getBlockX() + " Y: " + location.getBlockY() + " Z: " + location.getBlockZ());
+                    compass.setItemMeta(meta);
+                    if (event.getPlayer().getInventory().contains(compass))
+                        event.getPlayer().getInventory().removeItem(compass);
+                    try{
+                        String query = "DELETE FROM DieChests WHERE World = ? AND X = ? AND Y = ? AND Z = ?";
+                        PreparedStatement statement = PlayerChestDiePlugin.connection.prepareStatement(query);
+                        statement.setString(1, chest.getBlock().getWorld().getName());
+                        statement.setInt(2, chest.getBlock().getX());
+                        statement.setInt(3, chest.getBlock().getY());
+                        statement.setInt(4, chest.getBlock().getZ());
+                        statement.executeUpdate();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (secondBlock != null)
                 {

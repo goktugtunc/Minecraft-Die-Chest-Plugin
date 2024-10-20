@@ -6,3 +6,9 @@ permissions:
     playerchestdieplugin.breakBlock:
         default: false
         description: Allows the player to use the plugin
+commands:
+    findDieChest:
+        description: Find the chest that the player died
+        usage: /<command>
+        permission: playerchestdieplugin.findDieChest
+        permission-message: You don't have permission to use this command

@@ -1,4 +1,5 @@
 com\gotunc\playerChestDiePlugin\Listeners\PlayerDeath.class
 com\gotunc\playerChestDiePlugin\PlayerChestDiePlugin.class
 com\gotunc\playerChestDiePlugin\Listeners\blockBreak.class
+com\gotunc\playerChestDiePlugin\PlayerChestDieCommand.class
 com\gotunc\playerChestDiePlugin\Listeners\InventoryControl.class

@@ -1,5 +1,6 @@
 package com.gotunc.playerChestDiePlugin.Listeners;
 
+import com.gotunc.playerChestDiePlugin.PlayerChestDiePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -14,6 +15,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import java.sql.PreparedStatement;
 
 public class PlayerDeath implements Listener {
 
@@ -41,6 +44,21 @@ public class PlayerDeath implements Listener {
                 location.add(0, 1, 0);
                 block = location.getBlock();
             }
+        }
+
+        try{
+            String query = "INSERT INTO DieChests (World, X, Y, Z) VALUES (?, ?, ?, ?)";
+            PreparedStatement statement = PlayerChestDiePlugin.connection.prepareStatement(query);
+            statement.setString(1, location.getWorld().getName());
+            statement.setInt(2, location.getBlockX());
+            statement.setInt(3, location.getBlockY());
+            statement.setInt(4, location.getBlockZ());
+            statement.executeUpdate();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return;
         }
 
         // Sandık yerleştir
